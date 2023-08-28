@@ -1,13 +1,25 @@
-﻿namespace OramaInvestimentos.Data.Entities {
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace OramaInvestimentos.Data.Entities {
     public class FinancialTransaction {
-        public int TransactionID { get; set; }
-        public int AccountID { get; set; }
-        public string Type { get; set; }
-        public int AssetID { get; set; }
-        public int Quantity { get; set; }
-        public decimal TotalValue { get; set; }
-        public DateTime Date { get; set; }
-        public BankAccount BankAccount { get; set; } // Navigation property
-        public FinancialAsset FinancialAsset { get; set; } // Navigation property
+
+        [Column(TypeName = "BIGINT")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int transactionID { get; set; }
+        public int accountID { get; set; }
+
+        [Column(TypeName = "VARCHAR")]
+        [StringLength(3)]
+        public string type { get; set; }
+        public int assetID { get; set; }
+        [Column(TypeName = "DECIMAL")]
+        public int quantity { get; set; }
+        [Column(TypeName = "DECIMAL")]
+        public decimal totalValue { get; set; }
+        public DateTime date { get; set; }
+        public BankAccount bankAccount { get; set; } = new BankAccount(); 
+        public FinancialAsset financialAsset { get; set; } = new FinancialAsset();
     }
 }
