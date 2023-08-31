@@ -22,7 +22,7 @@ namespace OramaInvestimentos.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.BankAccount", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.BankAccountParam", b =>
                 {
                     b.Property<long>("accountID")
                         .ValueGeneratedOnAdd()
@@ -33,7 +33,7 @@ namespace OramaInvestimentos.Migrations
                     b.Property<decimal>("balance")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DECIMAL")
-                        .HasDefaultValue(10000m);
+                        .HasDefaultValue(90000m);
 
                     b.Property<long>("customerID")
                         .HasColumnType("BIGINT");
@@ -46,7 +46,7 @@ namespace OramaInvestimentos.Migrations
                     b.ToTable("BankAccounts");
                 });
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.Customer", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.CustomerParam", b =>
                 {
                     b.Property<long>("customerID")
                         .ValueGeneratedOnAdd()
@@ -66,7 +66,7 @@ namespace OramaInvestimentos.Migrations
 
                     b.Property<string>("password")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(255)
                         .HasColumnType("VARCHAR");
 
                     b.Property<string>("salt")
@@ -82,12 +82,13 @@ namespace OramaInvestimentos.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialAsset", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialAssetParam", b =>
                 {
                     b.Property<long>("assetID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("BIGINT")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.None);
+                        .HasColumnType("BIGINT");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("assetID"));
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -100,21 +101,83 @@ namespace OramaInvestimentos.Migrations
                     b.HasKey("assetID");
 
                     b.ToTable("FinancialAssets");
+
+                    b.HasData(
+                        new
+                        {
+                            assetID = 1L,
+                            name = "ABC Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 2L,
+                            name = "DEF Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 3L,
+                            name = "GHI Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 4L,
+                            name = "JKL Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 5L,
+                            name = "MNO Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 6L,
+                            name = "PQR Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 7L,
+                            name = "STU Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 8L,
+                            name = "VWX Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 9L,
+                            name = "YZA Stock",
+                            price = 100m
+                        },
+                        new
+                        {
+                            assetID = 10L,
+                            name = "BCD Stock",
+                            price = 100m
+                        });
                 });
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialTransaction", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialTransactionParam", b =>
                 {
-                    b.Property<long>("transactionID")
+                    b.Property<long?>("transactionID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("BIGINT");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("transactionID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("transactionID"));
 
                     b.Property<long>("accountID")
                         .HasColumnType("BIGINT");
 
-                    b.Property<int>("assetID")
-                        .HasColumnType("int");
+                    b.Property<long>("assetID")
+                        .HasColumnType("BIGINT");
 
                     b.Property<DateTime>("date")
                         .HasColumnType("datetime2");
@@ -127,64 +190,62 @@ namespace OramaInvestimentos.Migrations
 
                     b.Property<string>("type")
                         .IsRequired()
-                        .HasMaxLength(3)
+                        .HasMaxLength(4)
                         .HasColumnType("VARCHAR");
 
                     b.HasKey("transactionID");
 
                     b.HasIndex("accountID");
 
+                    b.HasIndex("assetID");
+
                     b.ToTable("FinancialTransactions");
                 });
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.BankAccount", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.BankAccountParam", b =>
                 {
-                    b.HasOne("OramaInvestimentos.Data.Entities.Customer", "customer")
+                    b.HasOne("OramaInvestimentos.Data.Entities.CustomerParam", "customer")
                         .WithOne("bankAccount")
-                        .HasForeignKey("OramaInvestimentos.Data.Entities.BankAccount", "customerID")
+                        .HasForeignKey("OramaInvestimentos.Data.Entities.BankAccountParam", "customerID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("customer");
                 });
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialAsset", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialTransactionParam", b =>
                 {
-                    b.HasOne("OramaInvestimentos.Data.Entities.FinancialTransaction", "transaction")
-                        .WithOne("financialAsset")
-                        .HasForeignKey("OramaInvestimentos.Data.Entities.FinancialAsset", "assetID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("transaction");
-                });
-
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialTransaction", b =>
-                {
-                    b.HasOne("OramaInvestimentos.Data.Entities.BankAccount", "bankAccount")
+                    b.HasOne("OramaInvestimentos.Data.Entities.BankAccountParam", "bankAccount")
                         .WithMany("transactions")
                         .HasForeignKey("accountID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OramaInvestimentos.Data.Entities.FinancialAssetParam", "financialAsset")
+                        .WithMany("transactions")
+                        .HasForeignKey("assetID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("bankAccount");
+
+                    b.Navigation("financialAsset");
                 });
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.BankAccount", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.BankAccountParam", b =>
                 {
                     b.Navigation("transactions");
                 });
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.Customer", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.CustomerParam", b =>
                 {
                     b.Navigation("bankAccount")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialTransaction", b =>
+            modelBuilder.Entity("OramaInvestimentos.Data.Entities.FinancialAssetParam", b =>
                 {
-                    b.Navigation("financialAsset")
-                        .IsRequired();
+                    b.Navigation("transactions");
                 });
 #pragma warning restore 612, 618
         }

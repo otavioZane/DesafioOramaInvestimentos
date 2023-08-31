@@ -6,5 +6,7 @@ using System.Threading.Tasks;
 
 namespace AssetsMaintenance.Domain.BuyAssetsService {
     public class BuyAssetService {
+
+
     }
 }
