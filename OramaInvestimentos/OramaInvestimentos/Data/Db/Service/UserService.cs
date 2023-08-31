@@ -2,14 +2,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
-using System.Text;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 using OramaInvestimentos.Entities;
 using OramaInvestimentos.Interfaces;
 using OramaInvestimentos.Data.Entities;
@@ -23,13 +15,15 @@ namespace OramaInvestimentos.Data.Db.Client {
         private readonly IUserRepository _userRepository;
         private readonly ISalt _salt;
         private readonly IValidation _validation;
+        private readonly IBankAccountRepository _bankAccountRepository;
 
         public UserService(
             ILogger logger,
             JwtConfig jwtConfig,
             IUserRepository userRepository,
             ISalt salt,
-            IValidation validation
+            IValidation validation,
+            IBankAccountRepository bankAccountRepository
 
         ) {
             _jwtConfig = jwtConfig;
@@ -37,7 +31,7 @@ namespace OramaInvestimentos.Data.Db.Client {
             _userRepository = userRepository;
             _salt = salt;
             _validation = validation;
-
+            _bankAccountRepository = bankAccountRepository;
         }
 
         public Response.Signin Signin(Request.Signin request) {
@@ -92,7 +86,7 @@ namespace OramaInvestimentos.Data.Db.Client {
                 throw new CustomError("E-mail inválido", System.Net.HttpStatusCode.BadRequest);
             }
 
-            if (_userRepository.FindUser(request.email) != null )  {        
+            if (_userRepository.FindUser(request.email) != null) {
                 throw new CustomError(
                     "E-mail já utilizado",
                     System.Net.HttpStatusCode.BadRequest
@@ -105,9 +99,9 @@ namespace OramaInvestimentos.Data.Db.Client {
 
             var check = _salt.CheckHash(request.password, hashedPassword, salt);
 
-            var user = new Customer() {
+            var user = new CustomerParam() {
                 email = request.email,
-                name = request.name,
+                name = request.name
             };
 
             Random r = new Random();
@@ -115,9 +109,13 @@ namespace OramaInvestimentos.Data.Db.Client {
             string totp = randNum.ToString("D6");
 
             user.password = Convert.ToBase64String(hashedPassword);
-            user.salt = Convert.ToBase64String(salt);         
+            user.salt = Convert.ToBase64String(salt);
 
             var userDb = _userRepository.AddUser(user);
+
+            var account = new BankAccountParam() { customerID = userDb.customerID, customer = userDb };
+
+            var accountDb = _bankAccountRepository.AddAccount(account);
 
             var securityKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwtConfig.RsaPrivateKey)

@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace OramaInvestimentos.Data.Entities {
-    public class FinancialTransaction {
+    public class FinancialTransactionParam {
 
         [Column(TypeName = "BIGINT")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int transactionID { get; set; }
+        public long? transactionID { get; set; }
         public int accountID { get; set; }
 
         [Column(TypeName = "VARCHAR")]
-        [StringLength(3)]
+        [StringLength(4)]
         public string type { get; set; }
         public int assetID { get; set; }
         [Column(TypeName = "DECIMAL")]
@@ -19,7 +19,7 @@ namespace OramaInvestimentos.Data.Entities {
         [Column(TypeName = "DECIMAL")]
         public decimal totalValue { get; set; }
         public DateTime date { get; set; }
-        public BankAccount bankAccount { get; set; } = new BankAccount(); 
-        public FinancialAsset financialAsset { get; set; } = new FinancialAsset();
+        public virtual BankAccountParam bankAccount { get; set; } 
+        public FinancialAssetParam financialAsset { get; set; } 
     }
 }

@@ -25,5 +25,23 @@ namespace OramaInvestimentos.Entities {
             public string name { get; set; }
 
         }
+
+        public class GetBalance {
+
+           public int customerID { get; set; }
+        }
+
+        public class GetStatement {
+
+            public int customerID { get; set; }
+        }
+
+        public class BuyFinancialAsset {
+
+            public int quantity { get; set; }
+
+            public int assetID  { get; set; }
+
+        }       
     }
 }

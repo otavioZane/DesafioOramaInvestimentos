@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace OramaInvestimentos.Data.Entities {
-    public class BankAccount {
+    public class BankAccountParam {
 
         [Column(TypeName = "BIGINT")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -12,7 +12,7 @@ namespace OramaInvestimentos.Data.Entities {
 
         [Column(TypeName = "DECIMAL")]       
         public decimal balance { get; set; }
-        public Customer customer { get; set; } = new Customer(); 
-        public ICollection<FinancialTransaction> transactions { get; set; } = new List<FinancialTransaction>();
+        public CustomerParam customer { get; set; } = new CustomerParam(); 
+        public virtual ICollection<FinancialTransactionParam> transactions { get; set; } = new List<FinancialTransactionParam>();
     }
 }

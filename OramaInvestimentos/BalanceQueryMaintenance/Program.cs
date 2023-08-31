@@ -1,6 +1,12 @@
+using OramaInvestimentos.Data.Db.Client;
+using OramaInvestimentos.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var services = new ServiceCollection();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

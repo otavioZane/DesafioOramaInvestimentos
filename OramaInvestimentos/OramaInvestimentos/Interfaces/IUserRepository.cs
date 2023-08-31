@@ -3,9 +3,11 @@
 namespace OramaInvestimentos.Interfaces {
     public interface IUserRepository {
 
-        public Customer AddUser(Customer request);
+        public CustomerParam AddUser(CustomerParam request);
 
-        public Customer FindUser(string email);
+        public CustomerParam FindUser(string email);
+
+        public CustomerParam FindUserById(int customerID);
 
     }
 }

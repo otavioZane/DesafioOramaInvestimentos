@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OramaInvestimentos.Data.Entities {
-    public class FinancialAsset {
+    public class FinancialAssetParam {
 
         [Column(TypeName = "BIGINT")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,6 +16,7 @@ namespace OramaInvestimentos.Data.Entities {
 
         [Column(TypeName = "DECIMAL")]
         public decimal price { get; set; }
-        public FinancialTransaction transaction { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<FinancialTransactionParam> transactions { get; set; }
     }
 }
