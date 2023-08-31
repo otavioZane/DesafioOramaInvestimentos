@@ -12,21 +12,21 @@
   - Após cadastrar-se, na resposta do método Signup você recebera um tolken e devera copia-lo.
   - No canto superior há o botão "Authorize", cole o token e clicke em "Authorize" em verde, então o login será efetuado liberando acesso a todas as funcionalidades.
 
-
   ## Funcionalidades
-    ### Consulta de saldo:
+  ### Consulta de saldo:
       Para consultar seu saldo basta clickar no método "GetBalance" e em seguida no botão "Try Out".
 
-    ### Consulta de extrato:
+  ### Consulta de extrato:
       Para consultar seu extrato clique no método "GetStatement" e em seguida no botão "Try Out".
 
-    ### Consulta de ações:
+  ### Consulta de ações:
       Para ver as ações disponiveis vá até o método "GetFinancialAssets" e em seguida no botão "Try Out".
 
-    ### Compra e venda de ações:
-      Para comprar e vender é necessário clickar em seus respectivos campos, para comprar você precisa ter um saldo maior do que o valor total de ações desejadas. Para vender é necessário ter comprado ações e não tentar           vender um número maior do que o valor possuido.
+  ### Compra e venda de ações:
+      Para comprar e vender é necessário clickar em seus respectivos campos, para comprar você precisa ter um saldo maior do que o valor total de ações desejadas.
+      Para vender é necessário ter comprado ações, e não tentar vender um número maior do que o valor possuido.
   
-    ### HealthCheck:
+  ### HealthCheck:
       Para conferir o status de saude da API, você ira retirar o final da url e substituir seu texto como no exemplo:
       "https://localhost:7275/swagger/index.html" para "https://localhost:7275/Health".
       
